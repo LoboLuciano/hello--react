@@ -1,9 +1,10 @@
 const express  = require('express');
 const mongoose = require('mongoose');
 const morgan   = require('morgan');
+const path = require('path');
 const cors =require('cors');
 // config vars
-const port = process.env.PORT        || 3000;
+const port = process.env.PORT        || 4000;
 const db   = process.env.MONGODB_URI || 'mongodb://localhost/notas';
 
 // crear app
@@ -18,6 +19,11 @@ mongoose
     console.log(`DB connected @ ${db}`);
   })
   .catch(err => console.error(`Connection error ${err}`));
+
+  app.use(express.static('public'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // todo el middleware aca abajo y antes del listen
 app.use(express.json());
